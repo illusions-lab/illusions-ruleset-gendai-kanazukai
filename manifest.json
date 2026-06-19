@@ -1,0 +1,37 @@
+{
+  "$comment": "Ruleset meta — read WITHOUT executing code (UI listing, engineApi check, quarantine). Keep in sync with src/index.ts.",
+  "id": "com.illusions-lab.gendai-kanazukai",
+  "name": "Gendai Kanazukai (1986)",
+  "nameJa": "現代仮名遣い（内閣告示 1986）",
+  "version": "0.1.0",
+  "engineApi": 1,
+  "license": "MIT",
+  "maintainerEmail": "rulesets@illusions.app",
+  "rulesetPrefix": "gk-",
+  "guidelines": [
+    {
+      "id": "gendai-kanazukai-1986",
+      "nameJa": "現代仮名遣い",
+      "publisherJa": "内閣告示第1号",
+      "year": 1986,
+      "license": "Public",
+      "descriptionJa": "昭和61年内閣告示第1号「現代仮名遣い」に基づく仮名遣いの基準。"
+    }
+  ],
+  "rules": [
+    {
+      "ruleId": "gk-yotsugana",
+      "nameJa": "四つ仮名（ぢ・づ）の使い分け",
+      "descriptionJa": "「ぢ」「づ」を用いる語（同音の連呼・二語の連合）が「じ」「ず」と誤記されていないか検出します。",
+      "guidelineId": "gendai-kanazukai-1986",
+      "level": "L1",
+      "defaultConfig": { "enabled": true, "severity": "warning" },
+      "applicableModes": ["novel", "official", "blog", "academic", "sns"],
+      "docs": {
+        "positiveExample": "シャツがちぢむ。",
+        "negativeExample": "シャツがちじむ。",
+        "sourceReference": "現代仮名遣い（昭和61年内閣告示第1号）本文 第2の5(1)"
+      }
+    }
+  ]
+}
