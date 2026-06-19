@@ -3,7 +3,7 @@
   "id": "com.illusions-lab.gendai-kanazukai",
   "name": "Gendai Kanazukai (1986)",
   "nameJa": "現代仮名遣い（内閣告示 1986）",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "engineApi": 1,
   "license": "MIT",
   "maintainerEmail": "rulesets@illusions.app",
@@ -31,6 +31,20 @@
         "positiveExample": "シャツがちぢむ。",
         "negativeExample": "シャツがちじむ。",
         "sourceReference": "現代仮名遣い（昭和61年内閣告示第1号）本文 第2の5(1)"
+      }
+    },
+    {
+      "ruleId": "gk-o-choon",
+      "nameJa": "オ列長音の例外語（「お」表記）",
+      "descriptionJa": "「お」を添えて書くオ列長音の例外語（おおかみ・こおろぎ・おおむね・大きい 等）が「う」を添えた長音で誤記されていないか検出します。",
+      "guidelineId": "gendai-kanazukai-1986",
+      "level": "L1",
+      "defaultConfig": { "enabled": true, "severity": "warning" },
+      "applicableModes": ["novel", "official", "blog", "academic", "sns"],
+      "docs": {
+        "positiveExample": "おおかみが現れた。",
+        "negativeExample": "おうかみが現れた。",
+        "sourceReference": "現代仮名遣い（昭和61年内閣告示第1号）本文 第2の6"
       }
     }
   ]
