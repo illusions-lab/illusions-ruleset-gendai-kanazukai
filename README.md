@@ -1,71 +1,60 @@
 # illusions-ruleset-gendai-kanazukai
 
-illusions 校正(lint)ルールセット — **現代仮名遣い（昭和61年内閣告示第1号）**。
+> illusions の校正ルールセット — **現代仮名遣い（昭和61年内閣告示第1号）**
 
-[illusions-ruleset-template](https://github.com/illusions-lab/illusions-ruleset-template) から作成。
-ビルド成果物（`dist/index.js` + `manifest.json`）を illusions の `~/.illusions/rulesets/<id>/` に置くと
-読み込まれる（Electron 版のみ。Web 版は本体同梱ルールのみ）。
+国が定めた仮名遣いの基準「現代仮名遣い」に基づき、**「ぢ・づ」と「じ・ず」の使い分け**
+（いわゆる四つ仮名）の誤りを、小説エディタ [illusions](https://illusions.app/) の自動校正で
+チェックします。
+
+## このルールセットでできること
+
+「ちぢむ」を「ちじむ」と書いてしまう——こうした四つ仮名の取り違えは、現代仮名遣いでも数少ない
+「迷いやすいポイント」のひとつです。本ルールセットは、告示が「ぢ・づ」と書くと定める語
+（同音の連呼・二語の連合）が「じ・ず」と誤記されていないかを検出します。
 
 ## 収録ルール
 
-| ruleId         | 内容                                                                 | 出典                         |
-| -------------- | -------------------------------------------------------------------- | ---------------------------- |
-| `gk-yotsugana` | 四つ仮名（ぢ・づ）の使い分け。「ぢ」「づ」を用いる語が「じ」「ず」と誤記された箇所を検出 | 現代仮名遣い 本文 第2の5(1)(2) |
+| ルール | 内容 | 例 |
+| --- | --- | --- |
+| 四つ仮名（ぢ・づ）の使い分け | 「ぢ・づ」と書く語が「じ・ず」と誤記された箇所を検出 | `シャツがちじむ` → `シャツがちぢむ` |
 
-各ルールの詳細は [`docs/rules/`](./docs/rules/) を参照。告示の**許容語**（いなずま・せかいじゅう 等）と
-**注意語**（じめん・ずが 等）は誤りではないため指摘しない。
+告示が認める**許容語**（いなずま・せかいじゅう 等）や、もともと「じ・ず」で書く**注意語**
+（じめん・ずが 等）は誤りではないため指摘しません。各ルールの詳細は
+[`docs/rules/`](./docs/rules/) を参照してください。
 
-## クイックスタート
+## 出典について — 「現代仮名遣い」
 
-```bash
-npm install
-npm run check     # validate + typecheck + test + build
-```
+「現代仮名遣い」は、**現代日本語を仮名で書き表すときのよりどころ**を定めた国の基準です。
+原則として**現代語の発音どおりに書く**こととしつつ、歴史的な経緯による例外（助詞の「は・へ・を」、
+四つ仮名など）を整理しています。
 
-`dist/index.js` が生成される。`manifest.json` と一緒に配布する。
+- **昭和61年（1986年）内閣告示第1号**として告示されたもので、昭和21年（1946年）の
+  「現代かなづかい」を全面的に改めたものです。
+- 法令・公用文・学校教育・新聞・出版など、現代日本語表記の基礎として広く用いられています。
+- 本ルールセットは、このうち機械的に判定できる**四つ仮名（第2の5）**のルールを実装しています。
 
-## ディレクトリ構成
+> 政府の告示のため**著作権の保護対象外（パブリックドメイン）**で、全文を自由に参照できます。
+> 原文は [文化庁「国語施策・日本語教育」](https://www.bunka.go.jp/kokugo_nihongo/sisaku/joho/joho/kijun/naikaku/gendaikana/index.html)
+> で公開されています。
 
-```
-.
-├── manifest.json                 # ルールセットのメタ（コードを実行せず読める純データ）
-├── src/
-│   ├── index.ts                  # default export: RulesetModule
-│   └── rules/gk-yotsugana.ts     # ルール実装（ctx.toolkit 経由）
-├── docs/rules/gk-yotsugana.md    # 校正目録（1ルール=1ファイル）
-├── test/                         # ゴールデン + 検出 + 偽陽性テスト
-└── types/illusions-lint-sdk.d.ts # SDK 型契約（import type 用）
-```
+## illusions への追加
 
-## ルールの書き方（要点）
+Electron 版 illusions で利用できます（Web 版は本体同梱ルールのみ）。
 
-- ルールセットは `RulesetModule` を **default export** する（`src/index.ts`）。
-- `manifest.maintainerEmail`（**必須**）= メンテナ連絡先。各ルールの `applicableModes`（**必須**）= 自動有効化
-  される校正モード（`novel`/`official`/`blog`/`academic`/`sns`、空配列は手動のみ）。
-- `createRules(ctx)` は基底クラス・道具を `ctx.bases`/`ctx.toolkit` から受け取る。**SDK は `import type` のみ**。
-- 標準に基づくルールは、必ず**原典の語例**に照らし、許容語・例外語を**偽陽性テスト**で守る。
+- **マーケットプレイス**: 本リポジトリには `illusions-ruleset` トピックが付いており、illusions が
+  自動収集します。アプリの校正設定からルールセット一覧に表示され、有効化できます。
+- **手動配置**: リリースの `dist/index.js` と `manifest.json` を
+  `~/.illusions/rulesets/com.illusions-lab.gendai-kanazukai/` に置きます。
 
-## テスト（必須）
+有効化すると、すべての校正モード（小説・公用文・ブログ・学術・SNS）で自動的に働きます。
 
-`test/test-kit.ts` の `createTestContext()` が illusions 実行時と同等の `ctx` を提供する。各ルールに
-positive→0 / negative→≥1 のゴールデンに加え、検出例・偽陽性例（告示の許容語/注意語）を網羅する。
+## ライセンス
 
-```bash
-npm test
-```
+- 本ルールセットの**コードは MIT ライセンス**です。
+- 出典の「現代仮名遣い」は**内閣告示でありパブリックドメイン**です（著作権による保護の対象外）。
 
-## 配布・公開
+## 開発・貢献
 
-- **フォルダ配布**: `dist/index.js` + `manifest.json` を `~/.illusions/rulesets/<id>/` に置く。
-- **マーケットプレイス**: GitHub リポジトリに topic **`illusions-ruleset`** を付けると、illusions が自動収集し、
-  ウイルススキャン後に自動上市する。
-- **リリース**: `v*` タグを push すると `dist/index.js` + `manifest.json` がリリースに添付される。
-
-## ライセンス・審査
-
-- 本リポジトリは MIT。ルールセットはオープン／クローズド、商用利用いずれも可。クローズドソースを
-  marketplace に上架する場合は illusions team のソースコード審査が必要（[TERMS.md](./TERMS.md) 参照）。
-
-## バージョン互換
-
-`manifest.json` の `engineApi` は illusions 側の `ENGINE_API_VERSION`（現在 **1**）と一致させること。
+[illusions-ruleset-template](https://github.com/illusions-lab/illusions-ruleset-template) から作成されています。
+ルールの追加・修正の手順、ビルド（`npm run check`）、テストについてはテンプレートの README と
+illusions 本体の `docs/ruleset/authoring.md` を参照してください。
