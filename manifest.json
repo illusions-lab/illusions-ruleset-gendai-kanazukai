@@ -3,7 +3,7 @@
   "id": "com.illusions-lab.gendai-kanazukai",
   "name": "Gendai Kanazukai (1986)",
   "nameJa": "現代仮名遣い（内閣告示 1986）",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "engineApi": 1,
   "license": "法令",
   "maintainerEmail": "rulesets@illusions.app",
