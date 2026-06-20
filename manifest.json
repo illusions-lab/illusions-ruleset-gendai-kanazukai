@@ -3,7 +3,7 @@
   "id": "com.illusions-lab.gendai-kanazukai",
   "name": "Gendai Kanazukai (1986)",
   "nameJa": "現代仮名遣い（内閣告示 1986）",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "engineApi": 1,
   "license": "MIT",
   "maintainerEmail": "rulesets@illusions.app",
@@ -25,8 +25,17 @@
       "descriptionJa": "「ぢ」「づ」を用いる語（同音の連呼・二語の連合）が「じ」「ず」と誤記されていないか検出します。",
       "guidelineId": "gendai-kanazukai-1986",
       "level": "L1",
-      "defaultConfig": { "enabled": true, "severity": "warning" },
-      "applicableModes": ["novel", "official", "blog", "academic", "sns"],
+      "defaultConfig": {
+        "enabled": true,
+        "severity": "warning"
+      },
+      "applicableModes": [
+        "novel",
+        "official",
+        "blog",
+        "academic",
+        "sns"
+      ],
       "docs": {
         "positiveExample": "シャツがちぢむ。",
         "negativeExample": "シャツがちじむ。",
@@ -39,8 +48,17 @@
       "descriptionJa": "「お」を添えて書くオ列長音の例外語（おおかみ・こおろぎ・おおむね・大きい 等）が「う」を添えた長音で誤記されていないか検出します。",
       "guidelineId": "gendai-kanazukai-1986",
       "level": "L1",
-      "defaultConfig": { "enabled": true, "severity": "warning" },
-      "applicableModes": ["novel", "official", "blog", "academic", "sns"],
+      "defaultConfig": {
+        "enabled": true,
+        "severity": "warning"
+      },
+      "applicableModes": [
+        "novel",
+        "official",
+        "blog",
+        "academic",
+        "sns"
+      ],
       "docs": {
         "positiveExample": "おおかみが現れた。",
         "negativeExample": "おうかみが現れた。",
@@ -53,8 +71,17 @@
       "descriptionJa": "助詞「は」「を」「へ」が「わ」「お」「え」と誤記されていないか検出します（形態素解析 L2）。終助詞「わ」は正しい表現のため検出しません。",
       "guidelineId": "gendai-kanazukai-1986",
       "level": "L2",
-      "defaultConfig": { "enabled": true, "severity": "info" },
-      "applicableModes": ["novel", "official", "blog", "academic", "sns"],
+      "defaultConfig": {
+        "enabled": true,
+        "severity": "info"
+      },
+      "applicableModes": [
+        "novel",
+        "official",
+        "blog",
+        "academic",
+        "sns"
+      ],
       "docs": {
         "positiveExample": "彼女は東京へ向かった。",
         "negativeExample": "彼女わ東京え向かった。",
@@ -67,8 +94,17 @@
       "descriptionJa": "動詞「言う」が口語発音に引きずられて「ゆう」系の活用形で書かれていないか検出します（形態素解析 L2）。",
       "guidelineId": "gendai-kanazukai-1986",
       "level": "L2",
-      "defaultConfig": { "enabled": true, "severity": "warning" },
-      "applicableModes": ["novel", "official", "blog", "academic", "sns"],
+      "defaultConfig": {
+        "enabled": true,
+        "severity": "warning"
+      },
+      "applicableModes": [
+        "novel",
+        "official",
+        "blog",
+        "academic",
+        "sns"
+      ],
       "docs": {
         "positiveExample": "先生がいったことを思い出した。",
         "negativeExample": "先生がゆったことを思い出した。",
