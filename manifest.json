@@ -5,7 +5,7 @@
   "nameJa": "現代仮名遣い（内閣告示 1986）",
   "version": "0.3.0",
   "engineApi": 1,
-  "license": "MIT",
+  "license": "内閣告示",
   "maintainerEmail": "rulesets@illusions.app",
   "rulesetPrefix": "gk-",
   "guidelines": [
