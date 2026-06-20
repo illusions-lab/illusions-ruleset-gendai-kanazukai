@@ -9,7 +9,9 @@
 import type { RulesetContext, RulesetModule } from "illusions-lint-sdk";
 
 import manifestJson from "../manifest.json";
+import { createGkIu } from "./rules/gk-iu";
 import { createGkOChoon } from "./rules/gk-o-choon";
+import { createGkParticleWaOE } from "./rules/gk-particle-wa-o-e";
 import { createGkYotsugana } from "./rules/gk-yotsugana";
 
 const manifest = manifestJson as RulesetModule["manifest"];
@@ -17,7 +19,12 @@ const manifest = manifestJson as RulesetModule["manifest"];
 const ruleset: RulesetModule = {
   manifest,
   createRules(ctx: RulesetContext) {
-    return [createGkYotsugana(ctx, manifest), createGkOChoon(ctx, manifest)];
+    return [
+      createGkYotsugana(ctx, manifest),
+      createGkOChoon(ctx, manifest),
+      createGkParticleWaOE(ctx, manifest),
+      createGkIu(ctx, manifest),
+    ];
   },
 };
 

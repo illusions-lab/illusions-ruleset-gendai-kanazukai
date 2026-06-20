@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 
 import ruleset from "../src/index";
 import manifest from "../manifest.json";
-import { createTestContext, CONFIG } from "./test-kit";
+import { createTestContext, CONFIG, lintText } from "./test-kit";
 
 const rule = () => ruleset.createRules(createTestContext()).find((r) => r.id === "gk-yotsugana")!;
 
@@ -19,10 +19,10 @@ describe("ruleset golden examples", () => {
         expect(r, `rule ${meta.ruleId} not returned by createRules`).toBeDefined();
       });
       it("positive example yields no issue", () => {
-        expect(r!.lint(meta.docs.positiveExample, CONFIG)).toHaveLength(0);
+        expect(lintText(r!, meta.docs.positiveExample, CONFIG)).toHaveLength(0);
       });
       it("negative example is flagged", () => {
-        expect(r!.lint(meta.docs.negativeExample, CONFIG).length).toBeGreaterThan(0);
+        expect(lintText(r!, meta.docs.negativeExample, CONFIG).length).toBeGreaterThan(0);
       });
     });
   }

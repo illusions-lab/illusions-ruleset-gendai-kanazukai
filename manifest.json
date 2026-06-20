@@ -46,6 +46,34 @@
         "negativeExample": "おうかみが現れた。",
         "sourceReference": "現代仮名遣い（昭和61年内閣告示第1号）本文 第2の6"
       }
+    },
+    {
+      "ruleId": "gk-particle-wa-o-e",
+      "nameJa": "助詞「は」「を」「へ」の正書法",
+      "descriptionJa": "助詞「は」「を」「へ」が「わ」「お」「え」と誤記されていないか検出します（形態素解析 L2）。終助詞「わ」は正しい表現のため検出しません。",
+      "guidelineId": "gendai-kanazukai-1986",
+      "level": "L2",
+      "defaultConfig": { "enabled": true, "severity": "info" },
+      "applicableModes": ["novel", "official", "blog", "academic", "sns"],
+      "docs": {
+        "positiveExample": "彼女は東京へ向かった。",
+        "negativeExample": "彼女わ東京え向かった。",
+        "sourceReference": "現代仮名遣い（昭和61年内閣告示第1号）本文 第2の1"
+      }
+    },
+    {
+      "ruleId": "gk-iu",
+      "nameJa": "動詞「言う」の正書法（「いう」と書く）",
+      "descriptionJa": "動詞「言う」が口語発音に引きずられて「ゆう」系の活用形で書かれていないか検出します（形態素解析 L2）。",
+      "guidelineId": "gendai-kanazukai-1986",
+      "level": "L2",
+      "defaultConfig": { "enabled": true, "severity": "warning" },
+      "applicableModes": ["novel", "official", "blog", "academic", "sns"],
+      "docs": {
+        "positiveExample": "先生がいったことを思い出した。",
+        "negativeExample": "先生がゆったことを思い出した。",
+        "sourceReference": "現代仮名遣い（昭和61年内閣告示第1号）本文 第2の2"
+      }
     }
   ]
 }

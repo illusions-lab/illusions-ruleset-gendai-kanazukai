@@ -278,3 +278,96 @@ export function createTestContext(dictState: GenjiHealthState = "ready"): Rulese
 }
 
 export const CONFIG = { enabled: true, severity: "warning" as Severity };
+
+// ---------------------------------------------------------------------------
+// lintText — dispatches to lintWithTokens for L2 rules using hand-built tokens
+// ---------------------------------------------------------------------------
+
+/**
+ * Convenience dispatcher that calls lint() for L1 rules.
+ * For L2 (morphological) rules, it generates a minimal token sequence from the
+ * text so golden tests can exercise lintWithTokens without a kuromoji runtime.
+ *
+ * The token generator covers the patterns needed for golden-example coverage of
+ * gk-particle-wa-o-e and gk-iu.
+ * Rule-specific L2 tests should pass their own hand-crafted token arrays to
+ * lintWithTokens directly.
+ */
+export function lintText(
+  rule: {
+    level?: string;
+    lint: (t: string, c: LintRuleConfig) => LintIssue[];
+    lintWithTokens?: (t: string, tokens: ReadonlyArray<Token>, c: LintRuleConfig) => LintIssue[];
+  },
+  text: string,
+  config: LintRuleConfig,
+): LintIssue[] {
+  if (rule.level === "L2" && typeof rule.lintWithTokens === "function") {
+    return rule.lintWithTokens(text, simpleTokenize(text), config);
+  }
+  return rule.lint(text, config);
+}
+
+/**
+ * Pre-built token sequences for the golden examples of L2 rules.
+ * Only covers the specific sentences used in manifest.docs.
+ * Extends as new L2 rules are added.
+ */
+function simpleTokenize(text: string): Token[] {
+  // gk-particle-wa-o-e golden examples
+  // Positive: 「彼女は東京へ向かった。」 — は and へ are correct
+  if (text === "彼女は東京へ向かった。") {
+    return [
+      { surface: "彼女", pos: "名詞", pos_detail_1: "代名詞", start: 0, end: 2 },
+      { surface: "は", pos: "助詞", pos_detail_1: "係助詞", start: 2, end: 3 },
+      { surface: "東京", pos: "名詞", pos_detail_1: "固有名詞", start: 3, end: 5 },
+      { surface: "へ", pos: "助詞", pos_detail_1: "格助詞", start: 5, end: 6 },
+      { surface: "向かっ", pos: "動詞", basic_form: "向かう", start: 6, end: 9 },
+      { surface: "た", pos: "助動詞", start: 9, end: 10 },
+      { surface: "。", pos: "記号", start: 10, end: 11 },
+    ];
+  }
+  // Negative: 「彼女わ東京え向かった。」 — わ(係助詞)→は, え(格助詞)→へ
+  if (text === "彼女わ東京え向かった。") {
+    return [
+      { surface: "彼女", pos: "名詞", pos_detail_1: "代名詞", start: 0, end: 2 },
+      { surface: "わ", pos: "助詞", pos_detail_1: "係助詞", start: 2, end: 3 },
+      { surface: "東京", pos: "名詞", pos_detail_1: "固有名詞", start: 3, end: 5 },
+      { surface: "え", pos: "助詞", pos_detail_1: "格助詞", start: 5, end: 6 },
+      { surface: "向かっ", pos: "動詞", basic_form: "向かう", start: 6, end: 9 },
+      { surface: "た", pos: "助動詞", start: 9, end: 10 },
+      { surface: "。", pos: "記号", start: 10, end: 11 },
+    ];
+  }
+  // gk-iu golden examples
+  // Positive: 「先生がいったことを思い出した。」 — いった is correct
+  if (text === "先生がいったことを思い出した。") {
+    return [
+      { surface: "先生", pos: "名詞", start: 0, end: 2 },
+      { surface: "が", pos: "助詞", pos_detail_1: "格助詞", start: 2, end: 3 },
+      { surface: "いっ", pos: "動詞", basic_form: "言う", start: 3, end: 5 },
+      { surface: "た", pos: "助動詞", start: 5, end: 6 },
+      { surface: "こと", pos: "名詞", pos_detail_1: "非自立", start: 6, end: 8 },
+      { surface: "を", pos: "助詞", pos_detail_1: "格助詞", start: 8, end: 9 },
+      { surface: "思い出し", pos: "動詞", basic_form: "思い出す", start: 9, end: 13 },
+      { surface: "た", pos: "助動詞", start: 13, end: 14 },
+      { surface: "。", pos: "記号", start: 14, end: 15 },
+    ];
+  }
+  // Negative: 「先生がゆったことを思い出した。」 — ゆった(言う) → いった
+  if (text === "先生がゆったことを思い出した。") {
+    return [
+      { surface: "先生", pos: "名詞", start: 0, end: 2 },
+      { surface: "が", pos: "助詞", pos_detail_1: "格助詞", start: 2, end: 3 },
+      { surface: "ゆっ", pos: "動詞", basic_form: "言う", start: 3, end: 5 },
+      { surface: "た", pos: "助動詞", start: 5, end: 6 },
+      { surface: "こと", pos: "名詞", pos_detail_1: "非自立", start: 6, end: 8 },
+      { surface: "を", pos: "助詞", pos_detail_1: "格助詞", start: 8, end: 9 },
+      { surface: "思い出し", pos: "動詞", basic_form: "思い出す", start: 9, end: 13 },
+      { surface: "た", pos: "助動詞", start: 13, end: 14 },
+      { surface: "。", pos: "記号", start: 14, end: 15 },
+    ];
+  }
+  // Fallback: single-token whole-text (not useful for L2 detection, but prevents crash)
+  return [{ surface: text, pos: "名詞", start: 0, end: text.length }];
+}
