@@ -1,6 +1,6 @@
 {
   "name": "illusions-ruleset-gendai-kanazukai",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "private": false,
   "description": "illusions 校正ルールセット — 現代仮名遣い（昭和61年内閣告示第1号）。",
   "type": "module",
